@@ -44,5 +44,5 @@ with open('urls.txt', 'r') as file:
             population = soup.find('tr', {'id': 'places_population__row'}).find('td', {'class': 'w2p_fw'})
             data = {"Pays": pays.text, "Capital": capital.text, "Population": population.text, "Date": datetime.now()}
             collection.insert_one(data)
-        print("Donnée insérée")
+            print("Donnée insérée")
         time.sleep(5)###Délai pour éviter de spamer et rendre plus réaliste le scénario d'arrivé des events 
