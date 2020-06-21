@@ -38,10 +38,10 @@ with open('urls.txt', 'r') as file:
     for row in file:
         res = requests.get(row.strip())
         if res.ok:
-            soup = BeautifulSoup(res.text, 'html.parser')
-            capital = soup.find('tr', {'id': 'places_capital__row'}).find('td', {'class': 'w2p_fw'})
-            pays = soup.find('tr', {'id': 'places_country__row'}).find('td', {'class': 'w2p_fw'})
-            population = soup.find('tr', {'id': 'places_population__row'}).find('td', {'class': 'w2p_fw'})
+            result = BeautifulSoup(res.text, 'html.parser')
+            capital = result.find('tr', {'id': 'places_capital__row'}).find('td', {'class': 'w2p_fw'})
+            pays = result.find('tr', {'id': 'places_country__row'}).find('td', {'class': 'w2p_fw'})
+            population = result.find('tr', {'id': 'places_population__row'}).find('td', {'class': 'w2p_fw'})
             data = {"Pays": pays.text, "Capital": capital.text, "Population": population.text, "Date": datetime.now()}
             collection.insert_one(data)
             print("Donnée insérée")
