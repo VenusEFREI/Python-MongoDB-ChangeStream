@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import time
 import pymongo
 from pymongo import MongoClient
+from datetime import datetime
 
 links = []
 
@@ -31,8 +32,6 @@ app = MongoClient('localhost', 27017)
 db = app["database_1"]
 collection = db["events"]
 
-
-
 ####On récupère les informations qu'on veut et on les insère dans la collection
 
 with open('urls.txt', 'r') as file:
@@ -43,7 +42,7 @@ with open('urls.txt', 'r') as file:
             capital = soup.find('tr', {'id': 'places_capital__row'}).find('td', {'class': 'w2p_fw'})
             pays = soup.find('tr', {'id': 'places_country__row'}).find('td', {'class': 'w2p_fw'})
             population = soup.find('tr', {'id': 'places_population__row'}).find('td', {'class': 'w2p_fw'})
-            data = {"Pays": pays.text, "Capital": capital.text, "Population": population.text}
+            data = {"Pays": pays.text, "Capital": capital.text, "Population": population.text, "Date": datetime.now()}
             collection.insert_one(data)
-            print("Donnée insérée")
+        print("Donnée insérée")
         time.sleep(5)###Délai pour éviter de spamer et rendre plus réaliste le scénario d'arrivé des events 
