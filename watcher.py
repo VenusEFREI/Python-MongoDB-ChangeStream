@@ -20,9 +20,9 @@ with collection1.watch(pipeline) as stream:
         result = insert_change["fullDocument"]
         data = result["Pays"]
         tag = collection2.find_one({"Pays": data})
-        if tag == None:# si aucune corrspondance dans la base2 (propre)=> on insert
+        if tag == None:  # si aucune corrspondance dans la base2 (propre) => on insert
             collection2.insert_one(result)
             print("nouvelle insertion")
-        else:# Au cas contraire on met juste à jour la date de l'existant
+        else:   # Au cas contraire on met juste à jour la date de l'existant
             collection2.update_one({ "Pays": data}, { "$set": {"Date": datetime.now()}})
             print("Date mise à jour")

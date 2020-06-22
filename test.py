@@ -3,6 +3,7 @@ from pymongo import MongoClient
 import json
 import os
 import sys
+from datetime import datetime
 
 def getConfigFromFile(jsonFilePath):
         with open(jsonFilePath) as configFile:
@@ -10,34 +11,56 @@ def getConfigFromFile(jsonFilePath):
             return config
 
 class IsisMongoWatcher:
+    target = 0
+    tag = ""
+    # def __init__(self, target, opType):
+    #     self.target = target
+    #     self.opType = opType
 
-    def start(self, target_1, target_2, opType):
+    @classmethod
+    def IsisTargeting(cls, target):
+        cls.target = target
         config = getConfigFromFile('isis-mongo-conf.json')
         param = config["DEV"]
         connexion = MongoClient(param["host"], int(param["port"]))
-        database_1 = connexion[param["instance"][target_1]["serveur"]]
-        collection_1 = connexion[param["instance"][target_1]["collection"]]
-        database_2 = connexion[param["instance"][target_2]["serveur"]]
-        collection_2 = connexion[param["instance"][target_2]["collection"]]
+        database = connexion[param["instance"][target]["serveur"]]
+        collection = database[param["instance"][target]["collection"]]
+        return collection
+
+    @classmethod
+    def IsisPipeline(cls, opType):
+        cls.operationType = opType
         pipeline = [{
             "$match":{"operationType": opType}
         }]
+        return pipeline
+
+    @classmethod
+    def IsisWatch(cls, target, opType):
+        cls.target = target
+        cls.opType = opType
+        collection = IsisMongoWatcher.IsisTargeting(target)
+        pipeline = IsisMongoWatcher.IsisPipeline(opType)
+        print(collection)
         print(pipeline)
-        print(database_1)
-        print(database_2)
-        print(collection_1)
-        print(collection_2)
-        with collection_1.watch(pipeline) as stream:
+        with collection.watch(pipeline) as stream:
             for change in stream:
                 result = change["fullDocument"]
-                data = result["Pays"]
-                tag = collection_2.find_one({"Pays": data})
-                if tag == None:# si aucune corrspondance dans la base2 (propre)=> on insert
-                    # collection_2.insert_one(result)
-                    print("nouvelle insertion")
-                else:# Au cas contraire on met juste à jour la date de l'existant
-                    # collection_2.update_one({ "Pays": data}, { "$set": {"Date": datetime.now()}})
-                    print("Date mise à jour")
+                # data = result["Pays"]
+                print(result)
+                # tag = collection_2.find_one({"Pays": data})
+                # if tag == None:# si aucune corrspondance dans la base2 (propre)=> on insert
+                #     collection_2.insert_one(result)
+                #     print("nouvelle insertion")
+                # else:# Au cas contraire on met juste à jour la date de l'existant
+                #     collection_2.update_one({ "Pays": data}, { "$set": {"Date": datetime.now()}})
+                #     print("Date mise à jour")
 
-watch = IsisMongoWatcher()
-watch.start(0, 1, "insert")
+watcher_1 = IsisMongoWatcher()
+watcher_1.IsisWatch(0, "insert")
+# watcher_1 = IsisMongoWatcher(0, "insert")
+# watcher_1.IsisWatch()
+# IsisWatch(0, 1,"insert")
+# print(target_1.IsisTargeting())
+# print(target_1.IsisPipeline())
+# target_1.IsisWatch(0,"insert")
