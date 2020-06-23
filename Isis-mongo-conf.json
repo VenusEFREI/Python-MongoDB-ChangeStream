@@ -4,7 +4,8 @@
         "port": "27017",
         "instance": [
             { "serveur": "database_1", "collection": "events"},
-            { "serveur": "database_2", "collection": "processed"}
+            { "serveur": "database_2", "collection": "processed"},
+            { "serveur": "database_3", "collection": "events"}
         ],
         "replicatSet": "rs0"
     },

@@ -29,8 +29,10 @@ with open('urls.txt', 'w') as file:
 """
 ####Connexion à la base de données et à la collection
 app = MongoClient('localhost', 27017)
-db = app["database_1"]
-collection = db["events"]
+db1 = app["database_1"]
+collection1 = db1["events"]
+
+
 
 ####On récupère les informations qu'on veut et on les insère dans la collection
 
@@ -43,6 +45,6 @@ with open('urls.txt', 'r') as file:
             pays = result.find('tr', {'id': 'places_country__row'}).find('td', {'class': 'w2p_fw'})
             population = result.find('tr', {'id': 'places_population__row'}).find('td', {'class': 'w2p_fw'})
             data = {"Pays": pays.text, "Capital": capital.text, "Population": population.text, "Date": datetime.now()}
-            collection.insert_one(data)
+            collection1.insert_one(data)
             print("Donnée insérée")
-        time.sleep(5)###Délai pour éviter de spamer et rendre plus réaliste le scénario d'arrivé des events 
+        time.sleep(1)###Délai pour éviter de spamer et rendre plus réaliste le scénario d'arrivé des events 
