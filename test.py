@@ -138,7 +138,7 @@ class IsisMongoWatcher:
 watcher = IsisMongoWatcher()
 """**Intanciation de la classe**.
 
-usage:
+Usage:
     On cré une instance de la classe pour mettre en place un watcher 
     qui va s'abonner.
     Exemple:
@@ -146,10 +146,15 @@ usage:
     watcher_1 = watcher.IsisWatch(0, "insert")
 """
 
+watcher_1 = watcher.IsisWatch(0, "insert")
+watcher_2 = watcher.IsisWatch(2, "insert")
+"""**Deux instances de watcher** qui vont s'abonner à deux colletion."""
+
 async def main():
     """**Fonction asynchrone main**"""
-    start = await asyncio.gather(#****Instance de IsisMongoWatcher****)
+    start = await asyncio.gather(watcher_1, watcher_2)
     return start
-asyncio.run(main())
 
+asyncio.run(main())
+"""On lance la fonction main() qui va lancer de manière concurente les watchers."""
 
