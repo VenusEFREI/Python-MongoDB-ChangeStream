@@ -8,30 +8,5 @@
             { "serveur": "database_3", "collection": "events"}
         ],
         "replicatSet": "rs0"
-    },
-
-    "PACK" : {
-        "user"      : "isis",
-        "password"  : "fkY4hNvbtLOK325",
-        "instances" : [
-            { "server" : "db01-isi-pp.phys.pack", "port" : "1520" },
-            { "server" : "db02-isi-pp.phys.pack", "port" : "1520" },
-            { "server" : "db03-isi-pp.phys.pack", "port" : "1520" }
-        ],
-        "base"          : "ISISADM",
-        "replicaSet"    : "LISI01"
-    },
-
-    "PROD" : {
-        "user"      : "isis",
-        "password"  : "yCsIub16tT8Wg03",
-        "instances" : [
-            { "server" : "db01-isi-pr.phys.prod", "port" : "1520" },
-            { "server" : "db02-isi-pr.phys.prod", "port" : "1520" },
-            { "server" : "db03-isi-pr.phys.prod", "port" : "1520" }
-        ],
-        "base"          : "ISISADM",
-        "replicaSet"    : "PISI51"
-
     }
 }
